@@ -38,8 +38,19 @@ pipeline {
         success {
             // Envoi de l'email en cas de succès
             mail to: 'hamdounechaymae@gmail.com',
-                 subject: "Succès de l'exécution du pipeline",
-                 body: "Le pipeline Jenkins a été exécuté avec succès."
+                 subject: "Pipeline Jenkins - Succès",
+                 body: """
+                 Bonjour,
+
+                 Le pipeline Jenkins a été exécuté avec succès.
+
+                 Détails du build :
+                 - Projet : Gestion Bibliothèque
+                 - Statut : Succès
+
+                 Cordialement,
+                 Jenkins
+             """
 
             // Envoi du message Slack en cas de succès
             slackSend (channel: '#tous-gestion-bibliotheque', 
@@ -51,6 +62,22 @@ pipeline {
             mail to: 'hamdounechaymae@gmail.com',
                  subject: "Échec de l'exécution du pipeline",
                  body: "Le pipeline Jenkins a échoué. Veuillez vérifier les logs."
+                 subject: "Pipeline Jenkins - Échec",
+                 body: """
+                     Bonjour,
+    
+                     Le pipeline Jenkins a échoué. Veuillez vérifier les logs ci-dessous pour plus de détails.
+    
+                     Détails du build :
+                     - Projet : Gestion Bibliothèque
+                     - Statut : Échec
+    
+                     Logs du build :
+                     ${currentBuild.rawBuild.getLog(50).join("\n")}
+    
+                     Cordialement,
+                     Jenkins
+                 """
 
             // Envoi du message Slack en cas d'échec
             slackSend (channel: '#tous-gestion-bibliotheque', 
