@@ -21,6 +21,14 @@ pipeline {
                 sh '${MAVEN_HOME}/bin/mvn test'
             }
         }
+        stage('Quality Analysis') {
+             steps {
+                 withSonarQubeEnv('SonarQube') {
+                     sh '${MAVEN_HOME}/bin/mvn sonar:sonar'
+                 }
+            }
+        }
+        
     }
 }
 
