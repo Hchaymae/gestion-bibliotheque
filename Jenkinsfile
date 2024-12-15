@@ -60,8 +60,6 @@ pipeline {
         failure {
             // Envoi de l'email en cas d'échec
             mail to: 'hamdounechaymae@gmail.com',
-                 subject: "Échec de l'exécution du pipeline",
-                 body: "Le pipeline Jenkins a échoué. Veuillez vérifier les logs."
                  subject: "Pipeline Jenkins - Échec",
                  body: """
                      Bonjour,
