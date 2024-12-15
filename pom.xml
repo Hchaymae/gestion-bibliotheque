@@ -20,12 +20,20 @@
             </configuration>
         </plugin>
 
-        <!-- Ajout du plugin Maven Surefire avec la version compatible -->
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.2</version>  <!-- Version corrigée de Surefire Plugin -->
+            <version>3.1.2</version>
+            <configuration>
+                <testFailureIgnore>false</testFailureIgnore>
+                <includes>
+                    <include>**/BookServiceTest.java</include>
+                    <include>**/StudentServiceTest.java</include>
+                    <include>**/BorrowServiceTest.java</include>
+                </includes>
+            </configuration>
         </plugin>
+
 
         <plugin>
             <groupId>org.jacoco</groupId>
@@ -48,48 +56,13 @@
         </plugin>
 
         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>2.22.2</version>
-            <executions>
-                <execution>
-                    <phase>test</phase>
-                    <goals>
-                        <goal>test</goal>
-                    </goals>
-                </execution>
-            </executions>
-        </plugin>
-
-        <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.0.0-M5</version>
-            <configuration>
-                <testFailureIgnore>false</testFailureIgnore>
-                <includes>
-                    <include>**/BookServiceTest.java</include>
-                    <include>**/StudentServiceTest.java</include>
-                    <include>**/BorrowServiceTest.java</include>
-                </includes>
-            </configuration>
-        </plugin>
-
-        <plugin>
             <groupId>org.sonarsource.scanner.maven</groupId>
             <artifactId>sonar-maven-plugin</artifactId>
             <version>3.9.1.2184</version>
         </plugin>
     </plugins>
 
-
-
-
-  
-
   </build>
-
-
 
   <properties>
     <maven.compiler.source>17</maven.compiler.source>
@@ -127,11 +100,6 @@
           <version>2.2.220</version>
           <scope>test</scope>
       </dependency>
-
-
-
   </dependencies>
-
-
 
 </project>

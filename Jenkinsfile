@@ -1,3 +1,35 @@
+pipeline {
+    agent any
+    environment {
+        MAVEN_HOME = tool 'Maven'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main',
+                    url: 'https://github.com/Hchaymae/gestion-bibliotheque.git',
+                    credentialsId: 'Github-PAT'
+            }
+        }
+        stage('Build') {
+            steps {
+                sh '${MAVEN_HOME}/bin/mvn clean compile'
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 // pipeline {
 //     agent any
 //     environment {
@@ -47,35 +79,3 @@
 // }
 
 
-pipeline {
-    agent any
-    environment {
-        MAVEN_HOME = tool 'Maven'
-    }
-    stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main',
-                    url: 'https://github.com/Hchaymae/gestion-bibliotheque.git',
-                    credentialsId: 'Github-PAT'
-            }
-        }
-        stage('Build') {
-            steps {
-                sh '${MAVEN_HOME}/bin/mvn clean compile'
-            }
-        }
-    }
-    post {
-        success {
-            emailext to: 'hamdounechaymae@gmail.com',
-                subject: 'Build Success',
-                body: 'Le build a été complété avec succès.'
-        }
-        failure {
-            emailext to: 'hamdounechaymae@gmail.com',
-                subject: 'Build Failed',
-                body: 'Le build a échoué.'
-        }
-    }
-}
