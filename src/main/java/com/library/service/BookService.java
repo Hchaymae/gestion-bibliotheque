@@ -10,7 +10,6 @@ public class BookService {
 
     private final BookDAO bookDAO;
     private List<Book> books;
-
     public BookService(BookDAO bookDAO) {
         this.bookDAO = bookDAO;
         this.books= bookDAO.getAllBooks();
