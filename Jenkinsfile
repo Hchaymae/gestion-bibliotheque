@@ -53,7 +53,8 @@ pipeline {
              """
 
             // Envoi du message Slack en cas de succès
-            slackSend (channel: '#tous-gestion-bibliotheque',
+            slackSend (color: '#00FF00',
+                       channel: '#tous-gestion-bibliotheque',
                        message: "Le pipeline Jenkins a été exécuté avec succès.",
                        tokenCredentialId: 'slack-token')
         }
@@ -70,15 +71,13 @@ pipeline {
                      - Projet : Gestion Bibliothèque
                      - Statut : Échec
 
-                     Logs du build :
-                     ${currentBuild.getLog(50).join("\n")}
-
                      Cordialement,
                      Jenkins
                  """
 
             // Envoi du message Slack en cas d'échec
-            slackSend (channel: '#tous-gestion-bibliotheque',
+            slackSend (color: '#FF0000',
+                       channel: '#tous-gestion-bibliotheque',
                        message: "Le pipeline Jenkins a échoué. Veuillez vérifier les logs.",
                        tokenCredentialId: 'slack-token')
         }
