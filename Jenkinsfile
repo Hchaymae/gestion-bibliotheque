@@ -6,37 +6,71 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'https://github.com/Hchaymae/gestion-bibliotheque.git',
-                    credentialsId: 'Github-PAT'
+                script {
+                    try {
+                        git branch: 'main',
+                            url: 'https://github.com/Hchaymae/gestion-bibliotheque.git',
+                            credentialsId: 'Github-PAT'
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
+                }
             }
         }
         stage('Build') {
             steps {
-                sh '${MAVEN_HOME}/bin/mvn clean compile'
+                script {
+                    try {
+                        sh '${MAVEN_HOME}/bin/mvn clean compile'
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
+                }
             }
         }
         stage('Test') {
             steps {
-                sh '${MAVEN_HOME}/bin/mvn test'
+                script {
+                    try {
+                        sh '${MAVEN_HOME}/bin/mvn test'
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
+                }
             }
         }
         stage('Quality Analysis') {
             steps {
-                withSonarQubeEnv('SonarQube') {
-                    sh '${MAVEN_HOME}/bin/mvn sonar:sonar'
+                script {
+                    try {
+                        withSonarQubeEnv('SonarQube') {
+                            sh '${MAVEN_HOME}/bin/mvn sonar:sonar'
+                        }
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
                 }
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Déploiement simulé réussi'
+                script {
+                    try {
+                        echo 'Déploiement simulé réussi'
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        throw e
+                    }
+                }
             }
         }
     }
     post {
         success {
-            // Envoi de l'email en cas de succès
             mail to: 'hamdounechaymae@gmail.com',
                  subject: "Pipeline Jenkins - Succès",
                  body: """
@@ -52,13 +86,11 @@ pipeline {
                  Jenkins
              """
 
-            // Envoi du message Slack en cas de succès
             slackSend (channel: '#tous-gestion-bibliotheque',
                        message: "Le pipeline Jenkins a été exécuté avec succès.",
                        tokenCredentialId: 'slack-token')
         }
         failure {
-            // Envoi de l'email en cas d'échec
             mail to: 'hamdounechaymae@gmail.com',
                  subject: "Pipeline Jenkins - Échec",
                  body: """
@@ -77,7 +109,6 @@ pipeline {
                      Jenkins
                  """
 
-            // Envoi du message Slack en cas d'échec
             slackSend (channel: '#tous-gestion-bibliotheque',
                        message: "Le pipeline Jenkins a échoué. Veuillez vérifier les logs.",
                        tokenCredentialId: 'slack-token')
