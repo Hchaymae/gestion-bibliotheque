@@ -1,14 +1,17 @@
 package com.library.dao;
 
-import com.library.model.Book;
 import com.library.model.Student;
 import com.library.util.DbConnection;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class StudentDAO {
+
+    private static final Logger logger = Logger.getLogger(StudentDAO.class.getName());
 
     // Méthode pour ajouter un étudiant
     public void addStudent(Student student) {
@@ -18,9 +21,9 @@ public class StudentDAO {
             statement.setString(1, student.getName());
             statement.setString(2, student.getEmail());
             statement.executeUpdate();
-            System.out.println("Student added successfully!");
+            logger.info("Student added successfully!");
         } catch (SQLException e) {
-            System.err.println("Error adding student: " + e.getMessage());
+            logger.log(Level.SEVERE, "Error adding student", e);
         }
     }
 
@@ -41,7 +44,7 @@ public class StudentDAO {
                 student.setEmail(resultSet.getString("email"));
             }
         } catch (SQLException e) {
-            System.err.println("Error retrieving Student by ID: " + e.getMessage());
+            logger.log(Level.SEVERE, "Error retrieving Student by ID", e);
         }
 
         return student;
@@ -49,7 +52,7 @@ public class StudentDAO {
 
     // Méthode pour récupérer tous les étudiants
     public List<Student> getAllStudents() {
-        List<Student> Student = new ArrayList<>();
+        List<Student> students = new ArrayList<>();
         String sql = "SELECT * FROM Student";
         try (Connection connection = DbConnection.getConnection();
              Statement statement = connection.createStatement();
@@ -60,12 +63,12 @@ public class StudentDAO {
                         resultSet.getString("name"),
                         resultSet.getString("email")
                 );
-                Student.add(student);
+                students.add(student);
             }
         } catch (SQLException e) {
-            System.err.println("Error retrieving Student: " + e.getMessage());
+            logger.log(Level.SEVERE, "Error retrieving students", e);
         }
-        return Student;
+        return students;
     }
 
     public Student findStudentByName(String name) {
@@ -81,11 +84,11 @@ public class StudentDAO {
             if (resultSet.next()) {
                 int id = resultSet.getInt("id");
                 String studentName = resultSet.getString("name");
-                String studentemail = resultSet.getString("email");
-                student = new Student(id, studentName,studentemail);
+                String studentEmail = resultSet.getString("email");
+                student = new Student(id, studentName, studentEmail);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error finding student by name", e);
         }
         return student;
     }
@@ -98,10 +101,10 @@ public class StudentDAO {
             statement.setInt(1, studentId);
             int rowsDeleted = statement.executeUpdate();
             if (rowsDeleted > 0) {
-                System.out.println("Student deleted successfully!");
+                logger.info("Student deleted successfully!");
             }
         } catch (SQLException e) {
-            System.err.println("Error deleting student: " + e.getMessage());
+            logger.log(Level.SEVERE, "Error deleting student", e);
         }
     }
 
@@ -115,10 +118,10 @@ public class StudentDAO {
             statement.setInt(3, student.getId());
             int rowsUpdated = statement.executeUpdate();
             if (rowsUpdated > 0) {
-                System.out.println("Student updated successfully!");
+                logger.info("Student updated successfully!");
             }
         } catch (SQLException e) {
-            System.err.println("Error updating student: " + e.getMessage());
+            logger.log(Level.SEVERE, "Error updating student", e);
         }
     }
 
@@ -130,7 +133,7 @@ public class StudentDAO {
             ResultSet rs = stmt.executeQuery();
             return rs.next() && rs.getInt(1) > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Error checking if student exists", e);
         }
         return false;
     }

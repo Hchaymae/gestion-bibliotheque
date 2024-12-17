@@ -20,7 +20,7 @@ public class BorrowDAO {
     }
 
     public List<Borrow> getAllBorrows() {
-        List<Borrow> Borrow = new ArrayList<>();
+        List<Borrow> borrows = new ArrayList<>();
         String query = "SELECT * FROM Borrow";
         try (Connection connection = DbConnection.getConnection();
              Statement stmt = connection.createStatement();
@@ -39,12 +39,12 @@ public class BorrowDAO {
                         rs.getDate("borrow_date"),
                         rs.getDate("return_date")
                 );
-                Borrow.add(borrow);
+                borrows.add(borrow);
             }
         } catch (SQLException e) {
             e.printStackTrace(); 
         }
-        return Borrow;
+        return borrows;
     }
 
     public void addBorrow(Borrow borrow) {
