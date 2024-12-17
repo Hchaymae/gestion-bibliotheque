@@ -14,13 +14,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class Main {
     public static void main(String[] args) throws ParseException {
-        final Logger logger = LoggerFactory.getLogger(Main.class);
-
         Scanner scanner = new Scanner(System.in);
 
         BookDAO bookDAO = new BookDAO();
@@ -33,16 +29,16 @@ public class Main {
         boolean running = true;
 
         while (running) {
-            logger.info("\n===== Menu =====");
-            logger.info("1. Ajouter un livre");
-            logger.info("2. Afficher les livres");
-            logger.info("3. Ajouter un étudiant");
-            logger.info("4. Afficher les étudiants");
-            logger.info("5. Emprunter un livre");
-            logger.info("6. Afficher les emprunts");
-            logger.info("7. Quitter");
+            System.out.println("\n===== Menu =====");
+            System.out.println("1. Ajouter un livre");
+            System.out.println("2. Afficher les livres");
+            System.out.println("3. Ajouter un étudiant");
+            System.out.println("4. Afficher les étudiants");
+            System.out.println("5. Emprunter un livre");
+            System.out.println("6. Afficher les emprunts");
+            System.out.println("7. Quitter");
 
-            logger.info("Choisir une option: ");
+            System.out.println("Choisir une option: ");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -50,11 +46,11 @@ public class Main {
             switch (choice) {
                 case 1:
                     // Ajouter un livre
-                    logger.info("Entrez le titre du livre: ");
+                    System.out.println("Entrez le titre du livre: ");
                     String title = scanner.nextLine();
-                    logger.info("Entrez l'auteur du livre: ");
+                    System.out.println("Entrez l'auteur du livre: ");
                     String author = scanner.nextLine();
-                    logger.info("Entrez l'année de publication: ");
+                    System.out.println("Entrez l'année de publication: ");
                     int year = scanner.nextInt();
                     scanner.nextLine();
                     Book newBook = new Book(title, author, year);
@@ -68,7 +64,7 @@ public class Main {
 
                 case 3:
                     // Ajouter un étudiant
-                    logger.info("Entrez le nom de l'étudiant: ");
+                    System.out.println("Entrez le nom de l'étudiant: ");
                     String studentName = scanner.nextLine();
                     Student newStudent = new Student(studentName);
                     studentService.addStudent(newStudent);
@@ -81,12 +77,12 @@ public class Main {
 
                 case 5:
                     // Emprunter un livre
-                    logger.info("Entrez le nom de l'étudiant: ");
+                    System.out.println("Entrez le nom de l'étudiant: ");
                     String studentNameForBorrow = scanner.nextLine();
-                    logger.info("Entrez le titre du livre: ");
+                    System.out.println("Entrez le titre du livre: ");
                     String bookTitleForBorrow = scanner.nextLine();
 
-                    logger.info("Entrez la date de retour (jj/mm/aaaa): ");
+                    System.out.println("Entrez la date de retour (jj/mm/aaaa): ");
                     String returnDateStr = scanner.nextLine();
 
                     Student studentForBorrow = studentService.findStudentByName(studentNameForBorrow);
@@ -101,7 +97,7 @@ public class Main {
                         Borrow borrow = new Borrow(studentForBorrow, bookForBorrow, new Date(), returnDate);
                         borrowService.addBorrow(borrow);
                     } else {
-                        logger.warn("Étudiant ou livre introuvable.");
+                        System.out.println("Étudiant ou livre introuvable.");
                     }
                     break;
 
@@ -112,11 +108,11 @@ public class Main {
 
                 case 7:
                     running = false;
-                    logger.info("Au revoir!");
+                    System.out.println("Au revoir!");
                     break;
 
                 default:
-                    logger.warn("Option invalide.");
+                    System.out.println("Option invalide.");
             }
         }
 

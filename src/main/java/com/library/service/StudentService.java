@@ -4,12 +4,9 @@ import com.library.dao.StudentDAO;
 import com.library.model.Student;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class StudentService {
 
-    private static final Logger logger = Logger.getLogger(StudentService.class.getName());
     private final StudentDAO studentDAO;
     private List<Student> students;
 
@@ -20,7 +17,7 @@ public class StudentService {
 
     public void addStudent(Student student) {
         studentDAO.addStudent(student);
-        logger.info("Student added: " + student.getName() + ", Email: " + student.getEmail());
+        System.out.println("Student added: " + student.getName() + ", Email: " + student.getEmail());
     }
 
     public Student getStudentById(int id) {
@@ -33,21 +30,21 @@ public class StudentService {
 
     public void getAllStudents() {
         if (students.isEmpty()) {
-            logger.warning("No students found.");
+            System.out.println("No students found.");
         } else {
             for (Student student : students) {
-                logger.info("Student - Name: " + student.getName() + ", Email: " + student.getEmail());
+                System.out.println("Student - Name: " + student.getName() + ", Email: " + student.getEmail());
             }
         }
     }
 
     public void updateStudent(Student student) {
         studentDAO.updateStudent(student);
-        logger.info("Student updated: " + student.getName() + ", Email: " + student.getEmail());
+        System.out.println("Student updated: " + student.getName() + ", Email: " + student.getEmail());
     }
 
     public void deleteStudent(int studentId) {
         studentDAO.deleteStudent(studentId);
-        logger.info("Student deleted with ID: " + studentId);
+        System.out.println("Student deleted with ID: " + studentId);
     }
 }
