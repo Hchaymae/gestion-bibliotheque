@@ -68,7 +68,7 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
     <maven.compiler.release>17</maven.compiler.release>
-      <sonar.login>sqa_30f3efe6e968f527ef476e39a60d9fb219957ed0</sonar.login>
+      <sonar.token>sqa_30f3efe6e968f527ef476e39a60d9fb219957ed0</sonar.token>
   </properties>
 
   <dependencies>
@@ -103,6 +103,7 @@
           <artifactId>logback-classic</artifactId>
           <version>1.4.12</version>
       </dependency>
+
       <!-- pom.xml -->
       <dependency>
           <groupId>com.h2database</groupId>

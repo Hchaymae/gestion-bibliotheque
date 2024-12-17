@@ -2,61 +2,67 @@ package com.library.service;
 
 import com.library.dao.BookDAO;
 import com.library.model.Book;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.util.List;
-import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class BookService {
 
-    private static final Logger logger = LoggerFactory.getLogger(BookService.class);
+    private static final Logger logger = Logger.getLogger(BookService.class.getName());
     private final BookDAO bookDAO;
     private List<Book> books;
 
     public BookService(BookDAO bookDAO) {
         this.bookDAO = bookDAO;
-        this.books = bookDAO.getAllBooks(); 
+        this.books = bookDAO.getAllBooks();
     }
 
     public void addBook(Book book) {
-        bookDAO.addBook(book);
-        logger.info("Book added: {}", book.getTitle());
+        try {
+            bookDAO.addBook(book);
+            logger.info("Book added successfully: " + book.getTitle());
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error adding book: " + e.getMessage(), e);
+        }
     }
 
-    public Optional<Book> getBookByIsbn(String isbn) {
-        Book book = bookDAO.getBookByIsbn(isbn);
-        return Optional.ofNullable(book);
+    public Book getBookByIsbn(String isbn) {
+        return bookDAO.getBookByIsbn(isbn);
     }
 
-    public Optional<Book> getBookById(int id) {
-        Book book = bookDAO.getBookById(id);
-        return Optional.ofNullable(book);
+    public Book getBookById(int id) {
+        return bookDAO.getBookById(id);
     }
 
     public void getAllBooks() {
         if (books.isEmpty()) {
-            logger.warn("No books available.");
+            logger.warning("No books available.");
         } else {
             for (Book book : books) {
-                logger.info("Title: {}, Author: {}", book.getTitle(), book.getAuthor());
+                logger.info("Title: " + book.getTitle() + ", Author: " + book.getAuthor());
             }
         }
     }
 
     public void updateBook(Book book) {
-        bookDAO.updateBook(book);
-        logger.info("Book updated: {}", book.getTitle());
+        try {
+            bookDAO.updateBook(book);
+            logger.info("Book updated successfully: " + book.getTitle());
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error updating book: " + e.getMessage(), e);
+        }
     }
 
     public void deleteBook(int id) {
-        bookDAO.deleteBook(id);
-        logger.info("Book deleted with ID: {}", id);
+        try {
+            bookDAO.deleteBook(id);
+            logger.info("Book deleted successfully, ID: " + id);
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, "Error deleting book: " + e.getMessage(), e);
+        }
     }
 
-    public Optional<Book> findBookByTitle(String title) {
-        Book book = bookDAO.findBookByTitle(title);
-        return Optional.ofNullable(book);
+    public Book findBookByTitle(String title) {
+        return bookDAO.findBookByTitle(title);
     }
-
 }

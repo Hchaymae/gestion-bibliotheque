@@ -1,13 +1,15 @@
 package com.library.service;
 
 import com.library.dao.StudentDAO;
-import com.library.model.Book;
 import com.library.model.Student;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class StudentService {
 
+    private static final Logger logger = Logger.getLogger(StudentService.class.getName());
     private final StudentDAO studentDAO;
     private List<Student> students;
 
@@ -18,6 +20,7 @@ public class StudentService {
 
     public void addStudent(Student student) {
         studentDAO.addStudent(student);
+        logger.info("Student added: " + student.getName() + ", Email: " + student.getEmail());
     }
 
     public Student getStudentById(int id) {
@@ -30,19 +33,21 @@ public class StudentService {
 
     public void getAllStudents() {
         if (students.isEmpty()) {
-            System.out.println("Aucun livre disponible.");
+            logger.warning("No students found.");
         } else {
             for (Student student : students) {
-                System.out.println("Nom: " + student.getName() + ", Email: " + student.getEmail());
+                logger.info("Student - Name: " + student.getName() + ", Email: " + student.getEmail());
             }
         }
     }
 
     public void updateStudent(Student student) {
         studentDAO.updateStudent(student);
+        logger.info("Student updated: " + student.getName() + ", Email: " + student.getEmail());
     }
 
     public void deleteStudent(int studentId) {
         studentDAO.deleteStudent(studentId);
+        logger.info("Student deleted with ID: " + studentId);
     }
 }
