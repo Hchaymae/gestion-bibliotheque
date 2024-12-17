@@ -59,11 +59,13 @@ public class Main {
                     scanner.nextLine();
                     Book newBook = new Book(title, author, year);
                     bookService.addBook(newBook);
+                    System.out.println("Livre ajouté avec succès!");
                     break;
 
                 case 2:
                     // Afficher les livres
-                    bookService.getAllBooks();
+                    System.out.println("\nListe des livres disponibles:");
+                    bookService.getAllBooks().forEach(System.out::println);
                     break;
 
                 case 3:
@@ -72,11 +74,13 @@ public class Main {
                     String studentName = scanner.nextLine();
                     Student newStudent = new Student(studentName);
                     studentService.addStudent(newStudent);
+                    System.out.println("Étudiant ajouté avec succès!");
                     break;
 
                 case 4:
                     // Afficher les étudiants
-                    studentService.getAllStudents();
+                    System.out.println("\nListe des étudiants:");
+                    studentService.getAllStudents().forEach(System.out::println);
                     break;
 
                 case 5:
@@ -87,19 +91,23 @@ public class Main {
                     String bookTitleForBorrow = scanner.nextLine();
 
                     logger.info("Entrez la date de retour (jj/mm/aaaa): ");
+
+//                     System.out.print("Entrez la date de retour (jj/MM/aaaa): ");
+
                     String returnDateStr = scanner.nextLine();
 
                     Student studentForBorrow = studentService.findStudentByName(studentNameForBorrow);
                     Book bookForBorrow = bookService.findBookByTitle(bookTitleForBorrow);
 
-                    Date returnDate = null;
-
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    returnDate = sdf.parse(returnDateStr);
-
                     if (studentForBorrow != null && bookForBorrow != null) {
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        Date returnDate = sdf.parse(returnDateStr);
+
                         Borrow borrow = new Borrow(studentForBorrow, bookForBorrow, new Date(), returnDate);
                         borrowService.addBorrow(borrow);
+
+                        System.out.println("Livre emprunté avec succès!");
+
                     } else {
                         logger.warn("Étudiant ou livre introuvable.");
                     }
@@ -107,7 +115,8 @@ public class Main {
 
                 case 6:
                     // Afficher les emprunts
-                    borrowService.getAllBorrows();
+                    System.out.println("\nListe des emprunts:");
+                    borrowService.getAllBorrows().forEach(System.out::println);
                     break;
 
                 case 7:
@@ -116,10 +125,13 @@ public class Main {
                     break;
 
                 default:
+
                     logger.warn("Option invalide.");
+
+//                     System.out.println("Option invalide. Veuillez choisir une option valide.");
+
             }
         }
-
         scanner.close();
     }
 }
