@@ -55,7 +55,7 @@ pipeline {
             // Envoi du message Slack en cas de succès
             slackSend (color: '#00FF00',
                        channel: '#tous-gestion-bibliotheque',
-                       message: "Le pipeline Jenkins a été exécuté avec succès." + slackDetails,
+                       message: "Le pipeline Jenkins a été exécuté avec succès." ,
                        tokenCredentialId: 'slack-token')
         }
         failure {
@@ -78,7 +78,7 @@ pipeline {
             // Envoi du message Slack en cas d'échec
             slackSend (color: '#FF0000',
                        channel: '#tous-gestion-bibliotheque',
-                       message: "Le pipeline Jenkins a échoué. Veuillez vérifier les logs." + slackDetails,
+                       message: "Le pipeline Jenkins a échoué. Veuillez vérifier les logs.",
                        tokenCredentialId: 'slack-token')
         }
     }
