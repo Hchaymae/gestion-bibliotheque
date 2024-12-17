@@ -7,13 +7,10 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    try {
+                    catchError(buildResult: 'FAILURE', message: 'Checkout failed') {
                         git branch: 'main',
                             url: 'https://github.com/Hchaymae/gestion-bibliotheque.git',
                             credentialsId: 'Github-PAT'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        throw e
                     }
                 }
             }
@@ -21,11 +18,8 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    try {
+                    catchError(buildResult: 'FAILURE', message: 'Build failed') {
                         sh '${MAVEN_HOME}/bin/mvn clean compile'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        throw e
                     }
                 }
             }
@@ -33,11 +27,8 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    try {
+                    catchError(buildResult: 'FAILURE', message: 'Test failed') {
                         sh '${MAVEN_HOME}/bin/mvn test'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        throw e
                     }
                 }
             }
@@ -45,13 +36,10 @@ pipeline {
         stage('Quality Analysis') {
             steps {
                 script {
-                    try {
+                    catchError(buildResult: 'FAILURE', message: 'SonarQube analysis failed') {
                         withSonarQubeEnv('SonarQube') {
                             sh '${MAVEN_HOME}/bin/mvn sonar:sonar'
                         }
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        throw e
                     }
                 }
             }
@@ -59,11 +47,8 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    try {
+                    catchError(buildResult: 'FAILURE', message: 'Deploy failed') {
                         echo 'Déploiement simulé réussi'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        throw e
                     }
                 }
             }
